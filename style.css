@@ -23,30 +23,45 @@ h1 {
   overflow: hidden;
 }
 
-/* 🧍 KARAKTER */
+/* 👧 Zsófi karakter */
 #player {
   position: absolute;
   width: 30px;
   height: 60px;
 }
 
+/* fej */
 .head {
   width: 24px;
   height: 24px;
-  background: #333;
+  background: #ffccaa; /* bőrszín */
   border-radius: 50%;
   margin: 0 auto;
+  position: relative;
 }
 
+/* haj: barna + kis vörös csík */
+.head::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -4px;
+  width: 32px;
+  height: 16px;
+  background: linear-gradient(to right, #8b4513 80%, #ff4500 20%);
+  border-radius: 50%;
+}
+
+/* test / ruha: bézs */
 .body {
-  width: 6px;
+  width: 16px;
   height: 30px;
-  background: #333;
+  background: #f5f5dc; /* bézs ruha */
   margin: 4px auto 0;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
-/* ❤️ SZÍV (CSS-ből) */
+/* ❤️ Szív */
 #heart {
   position: absolute;
   width: 24px;
