@@ -39,7 +39,7 @@ function checkCollision() {
   if (hit) {
     score++;
     lastCatchTime = Date.now();
-    message.textContent = `You caught my heart ❤️ (${score})`;
+    message.textContent = `Zsófi caught the heart ❤️ (${score})`;
     moveHeart();
     confetti();
   }
@@ -62,11 +62,11 @@ document.addEventListener("keydown", (e) => {
   checkCollision();
 });
 
-// Bátorító üzenet, ha nem sikerül elkapni
+// 5 mp után bátorító üzenet
 setInterval(() => {
   const now = Date.now();
   if (now - lastCatchTime > 5000) {
-    message.textContent = "Don't worry, try again — I'm worth it 😉";
+    message.textContent = "Dont worry, try again, I'm worth it!";
   }
 }, 1000);
 
