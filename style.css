@@ -98,9 +98,3 @@ h1 {
   background: #333;
   border-radius: 4px;
 }
-
-#controls {
-  margin-top: 10px;
-}
-
-#controls.hidden { display: none; }
