@@ -48,6 +48,62 @@ function generateObstacles(){
   const cols = 8;
   const rows = 8;
 
+  // Biztonsági zóna a karakter körül (2x2 cella)
+  const safeZone = ["0-0","1-0","0-1","1-1"];
+
+  // Véletlenszerű akadályok
+  for(let y=0; y<rows; y++){
+    for(let x=0; x<cols; x++){
+      const key = x + "-" + y;
+
+      if(safeZone.includes(key)) continue; // ne legyen a karakternél fal
+
+      if(Math.random() < 0.3){ // fal valószínűsége
+        const o = document.createElement("div");
+        o.className = "obstacle";
+        o.style.width = cellSize + "px";
+        o.style.height = "12px";
+        o.style.left = (x * cellSize + 10) + "px";
+        o.style.top = (y * cellSize + 20) + "px";
+        game.appendChild(o);
+        obstacles.push(o);
+      }
+    }
+  }
+}
+
+// Szív elhelyezése mindig a karaktertől távol
+function moveHeart() {
+  const maxX = game.clientWidth - 30;
+  const maxY = game.clientHeight - 30;
+
+  let valid = false;
+  let hx, hy;
+
+  while(!valid){
+    hx = Math.floor(Math.random() * maxX);
+    hy = Math.floor(Math.random() * maxY);
+
+    // legalább 2 cellányi távolság a kiindulási ponttól
+    if(hx > 80 || hy > 80){
+      valid = true;
+
+      // ellenőrzés, hogy nem akadály alatt van
+      for(const o of obstacles){
+        const rect = o.getBoundingClientRect();
+        if(hx >= rect.left && hx <= rect.right && hy >= rect.top && hy <= rect.bottom){
+          valid = false;
+          break;
+        }
+      }
+    }
+  }
+
+  heart.style.left = hx + "px";
+  heart.style.top = hy + "px";
+}
+
+
   // Véletlenszerű útvonal kiválasztása
   const path = predefinedPaths[Math.floor(Math.random()*predefinedPaths.length)];
 
