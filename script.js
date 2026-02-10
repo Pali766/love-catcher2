@@ -21,6 +21,25 @@ function hit(a,b){
 function random(min,max){ return Math.floor(Math.random()*(max-min)+min); }
 
 /* RENDEZETT AKADÁLYOK */
+// előre definiált útvonalak (10-15 db)
+const predefinedPaths = [
+  ["0-0","1-0","2-0","3-0","4-1","5-2","6-3","7-4","7-5","7-6","7-7"],
+  ["0-0","0-1","0-2","1-2","2-2","3-2","4-3","5-4","6-5","7-6","7-7"],
+  ["0-0","1-0","2-1","3-2","4-2","5-3","6-4","7-5","7-6","7-7"],
+  ["0-0","0-1","1-2","2-3","3-4","4-5","5-6","6-6","7-7"],
+  ["0-0","1-0","2-0","3-1","4-2","5-3","6-4","7-5","7-6","7-7"],
+  ["0-0","0-1","1-1","2-2","3-3","4-4","5-5","6-6","7-7"],
+  ["0-0","1-0","2-1","3-2","4-3","5-4","6-5","7-6","7-7"],
+  ["0-0","0-1","1-2","2-3","3-4","4-5","5-6","6-6","7-7"],
+  ["0-0","1-0","2-1","3-1","4-2","5-3","6-4","7-5","7-6","7-7"],
+  ["0-0","0-1","1-1","2-2","3-3","4-4","5-5","6-6","7-7"],
+  ["0-0","1-0","2-0","3-1","4-2","5-3","6-4","7-5","7-6","7-7"],
+  ["0-0","0-1","1-2","2-3","3-4","4-5","5-6","6-6","7-7"],
+  ["0-0","1-0","2-1","3-2","4-3","5-4","6-5","7-6","7-7"],
+  ["0-0","0-1","1-1","2-2","3-3","4-4","5-5","6-6","7-7"],
+  ["0-0","1-0","2-0","3-1","4-2","5-3","6-4","7-5","7-6","7-7"]
+];
+
 function generateObstacles(){
   obstacles.forEach(o => o.remove());
   obstacles = [];
@@ -29,19 +48,30 @@ function generateObstacles(){
   const cols = 8;
   const rows = 8;
 
-  // biztos útvonal (bal felső → jobb alsó)
-  let path = [];
-  let cx = 0, cy = 0;
-  path.push("0-0");
+  // Véletlenszerű útvonal kiválasztása
+  const path = predefinedPaths[Math.floor(Math.random()*predefinedPaths.length)];
 
-  while (cx < cols - 1 || cy < rows - 1) {
-    if (cx < cols - 1 && (cy === rows - 1 || Math.random() > 0.5)) {
-      cx++;
-    } else {
-      cy++;
+  // falak generálása az útvonalon kívül
+  for(let y=0; y<rows; y++){
+    for(let x=0; x<cols; x++){
+      const key = x + "-" + y;
+      // mindig szabad a kezdőpont (0-0 és közeli cellák)
+      if(path.includes(key) || (x<=1 && y<=1)) continue;
+
+      if(Math.random()<0.35){ // fal valószínűsége
+        const o = document.createElement("div");
+        o.className = "obstacle";
+        o.style.width = cellSize + "px";
+        o.style.height = "12px";
+        o.style.left = (x * cellSize + 10) + "px";
+        o.style.top = (y * cellSize + 20) + "px";
+        game.appendChild(o);
+        obstacles.push(o);
+      }
     }
-    path.push(cx + "-" + cy);
   }
+}
+
 
   // falak generálása, most nagyobb távolság
   for (let y = 0; y < rows; y++) {
