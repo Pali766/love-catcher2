@@ -25,19 +25,45 @@ function generateObstacles(){
   obstacles.forEach(o => o.remove());
   obstacles = [];
 
-  const rows = [80, 160, 240]; // fix sávok → mindig teljesíthető
+  const cellSize = 40; // rács méret
+  const cols = 8;
+  const rows = 8;
 
-  rows.forEach(yPos => {
-    const o = document.createElement("div");
-    o.className = "obstacle";
-    o.style.width = "70px";
-    o.style.height = "12px";
-    o.style.left = random(40, 240) + "px";
-    o.style.top = yPos + "px";
-    game.appendChild(o);
-    obstacles.push(o);
-  });
+  // biztos útvonal (bal felső → jobb alsó)
+  let path = [];
+  let cx = 0, cy = 0;
+  path.push("0-0");
+
+  while (cx < cols - 1 || cy < rows - 1) {
+    if (cx < cols - 1 && (cy === rows - 1 || Math.random() > 0.5)) {
+      cx++;
+    } else {
+      cy++;
+    }
+    path.push(cx + "-" + cy);
+  }
+
+  // falak generálása
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const key = x + "-" + y;
+
+      if (path.includes(key)) continue; // útvonal szabad
+
+      if (Math.random() < 0.35) {
+        const o = document.createElement("div");
+        o.className = "obstacle";
+        o.style.width = cellSize + "px";
+        o.style.height = "12px";
+        o.style.left = (x * cellSize + 10) + "px";
+        o.style.top = (y * cellSize + 20) + "px";
+        game.appendChild(o);
+        obstacles.push(o);
+      }
+    }
+  }
 }
+
 
 
 /* SZÍV MOZGÁS */
